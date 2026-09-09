@@ -23,19 +23,19 @@ class OrderPage(BasePage):
     @allure.step('Нажимаем нижнюю кнопку "Заказать" на главной странице')
     def click_order_from_bottom(self):
         for _ in range(10):
-            elements = self.driver.find_elements(
+            elements = self.find_elements(
                 *MainPageLocators.ORDER_BUTTON_BOTTOM
             )
             if elements and elements[0].is_displayed():
                 button = elements[0]
-                self.driver.execute_script(
+                self.execute_script(
                     "arguments[0].scrollIntoView({block: 'center'});",
                     button
                 )
-                self.driver.execute_script("arguments[0].click();", button)
+                self.execute_script("arguments[0].click();", button)
                 return
 
-            self.driver.execute_script("window.scrollBy(0, 700);")
+            self.execute_script("window.scrollBy(0, 700);")
 
         raise Exception('Не удалось найти нижнюю кнопку "Заказать" после прокрутки страницы')
 
@@ -73,7 +73,7 @@ class OrderPage(BasePage):
         date_input = self.wait_for_visibility(OrderPageLocators.DATE_INPUT)
         date_input.clear()
         date_input.send_keys(date_string)
-        self.driver.find_element(By.TAG_NAME, 'body').click()
+        self.find_element(By.TAG_NAME, 'body').click()
 
     @allure.step('Выбираем срок аренды')
     def select_rental_duration(self, duration):
