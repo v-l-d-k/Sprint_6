@@ -2,7 +2,6 @@ import allure
 from selenium.webdriver.common.by import By
 
 from data import Urls
-from locators.main_page_locators import MainPageLocators
 from locators.order_page_locators import OrderPageLocators
 from pages.base_page import BasePage
 
@@ -14,30 +13,6 @@ class OrderPage(BasePage):
     @allure.step('Открываем страницу заказа')
     def open_order_page(self):
         self.open(Urls.ORDER_PAGE)
-
-    @allure.step('Нажимаем верхнюю кнопку "Заказать" на главной странице')
-    def click_order_from_header(self):
-        self.scroll_to_element(MainPageLocators.ORDER_BUTTON_HEADER)
-        self.click_element(MainPageLocators.ORDER_BUTTON_HEADER)
-
-    @allure.step('Нажимаем нижнюю кнопку "Заказать" на главной странице')
-    def click_order_from_bottom(self):
-        for _ in range(10):
-            elements = self.find_elements(
-                *MainPageLocators.ORDER_BUTTON_BOTTOM
-            )
-            if elements and elements[0].is_displayed():
-                button = elements[0]
-                self.execute_script(
-                    "arguments[0].scrollIntoView({block: 'center'});",
-                    button
-                )
-                self.execute_script("arguments[0].click();", button)
-                return
-
-            self.execute_script("window.scrollBy(0, 700);")
-
-        raise Exception('Не удалось найти нижнюю кнопку "Заказать" после прокрутки страницы')
 
     @allure.step('Заполняем имя')
     def fill_name(self, name):
@@ -73,7 +48,7 @@ class OrderPage(BasePage):
         date_input = self.wait_for_visibility(OrderPageLocators.DATE_INPUT)
         date_input.clear()
         date_input.send_keys(date_string)
-        self.find_element(By.TAG_NAME, 'body').click()
+        self.find_element((By.TAG_NAME, "body")).click()
 
     @allure.step('Выбираем срок аренды')
     def select_rental_duration(self, duration):
@@ -130,8 +105,6 @@ class OrderPage(BasePage):
 
     @allure.step('Создание заказа через верхнюю кнопку "Заказать"')
     def create_order_from_header(self, order_data):
-        self.accept_cookies()
-        self.click_order_from_header()
         self.fill_first_form(order_data)
         self.click_next_button()
         self.fill_second_form(order_data)
@@ -139,8 +112,6 @@ class OrderPage(BasePage):
 
     @allure.step('Создание заказа через нижнюю кнопку "Заказать"')
     def create_order_from_bottom(self, order_data):
-        self.accept_cookies()
-        self.click_order_from_bottom()
         self.fill_first_form(order_data)
         self.click_next_button()
         self.fill_second_form(order_data)

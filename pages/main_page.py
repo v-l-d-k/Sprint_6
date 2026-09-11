@@ -24,3 +24,14 @@ class MainPage(BasePage):
         self.click_element(question_locator)
 
         return self.get_text(answer_locator)
+
+    @allure.step('Нажимаем верхнюю кнопку "Заказать" на главной странице')
+    def click_order_from_header(self):
+        self.scroll_to_element(MainPageLocators.ORDER_BUTTON_HEADER)
+        self.click_element(MainPageLocators.ORDER_BUTTON_HEADER)
+
+    @allure.step('Нажимаем нижнюю кнопку "Заказать" на главной странице')
+    def click_order_from_bottom(self):
+        self.scroll_page_down()
+        self.scroll_to_element(MainPageLocators.ORDER_BUTTON_BOTTOM)
+        self.click_element(MainPageLocators.ORDER_BUTTON_BOTTOM)

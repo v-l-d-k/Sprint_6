@@ -2,6 +2,7 @@ import allure
 
 from data import OrderData
 from pages.order_page import OrderPage
+from pages.main_page import MainPage
 
 
 @allure.suite('Тестирование оформления заказа')
@@ -12,7 +13,11 @@ class TestOrderPage:
         'Позитивный сценарий создания заказа через верхнюю кнопку на главной странице.'
     )
     def test_create_order_from_header(self, driver):
+        main_page = MainPage(driver)
         order_page = OrderPage(driver)
+        main_page.open_main_page()
+        main_page.accept_cookies()
+        main_page.click_order_from_header()
 
         order_page.create_order_from_header(OrderData.ORDER_FROM_HEADER)
 
@@ -26,7 +31,11 @@ class TestOrderPage:
         'Позитивный сценарий создания заказа через нижнюю кнопку на главной странице.'
     )
     def test_create_order_from_bottom(self, driver):
+        main_page = MainPage(driver)
         order_page = OrderPage(driver)
+        main_page.open_main_page()
+        main_page.accept_cookies()
+        main_page.click_order_from_bottom()
 
         order_page.create_order_from_bottom(OrderData.ORDER_FROM_BOTTOM)
 
